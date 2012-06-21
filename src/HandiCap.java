@@ -1,7 +1,6 @@
 //パッケージのインポート
 import javax.swing.*;
 import javax.swing.event.*;
-
 import java.awt.*;
 import java.awt.event.*;
 
@@ -23,7 +22,6 @@ public class HandiCap extends JFrame implements ActionListener {
 		c1 = getContentPane();
 
 		c1.setLayout(new FlowLayout());
-		// c1.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -37,9 +35,9 @@ public class HandiCap extends JFrame implements ActionListener {
 
 		nameFont = new Font(Font.DIALOG, Font.BOLD, 20);
 
-		player1 = new JLabel(" ユーザ名(自分):" + Cliant.player.getMyName());
+		player1 = new JLabel(" ユーザ名(自分):" + Client.player.getMyName());
 		player1.setFont(nameFont);
-		player2 = new JLabel(" ユーザ名(相手):" + Cliant.player.getYourName());
+		player2 = new JLabel(" ユーザ名(相手):" + Client.player.getYourName());
 		player2.setFont(nameFont);
 
 		panel.add(player1);
@@ -107,7 +105,6 @@ public class HandiCap extends JFrame implements ActionListener {
 
 		button = new JButton("OK");
 		button.addActionListener(this);
-		// button.setBounds(0, 0, 150, 40);
 		panel2.add(button);
 
 		setVisible(true);
@@ -129,18 +126,9 @@ public class HandiCap extends JFrame implements ActionListener {
 
 			if (myHandi == -1) {
 				myHandi = i;
-				Cliant.sendMessage(String.valueOf(i));
+				Client.sendMessage(String.valueOf(i));
 				txt1.setText("    相手のハンデ選択を待っています・・・");
 			}
-
-			/*
-			 * if(myHandi != -1 && yourHandi != -1){ if(myHandi == 0){
-			 * resultHandi = yourHandi; } else if(yourHandi == 0){ resultHandi =
-			 * myHandi; } else{ resultHandi = 0; }
-			 * 
-			 * setVisible(false); Cliant.check = new Check(myHandi, yourHandi,
-			 * resultHandi); }
-			 */
 		}
 	}
 
@@ -148,12 +136,12 @@ public class HandiCap extends JFrame implements ActionListener {
 		System.out.println("ハンデ選択画面：" + message + "を受信しました");
 
 		if (message.equals("接続切れ")) {
-			Cliant.sendMessage("戻る");
+			Client.sendMessage("戻る");
 			JOptionPane.showMessageDialog(null, "相手の接続が切れたのでログイン画面に戻ります");
 			setVisible(false);
-			Cliant cliant = new Cliant();
-			Cliant.player = new Player();
-			Cliant.nowScene = Cliant.Scene.login;
+			Client client = new Client();
+			Client.player = new Player();
+			Client.nowScene = Client.Scene.login;
 
 		} else {
 			if (yourHandi == -1) {
@@ -170,16 +158,16 @@ public class HandiCap extends JFrame implements ActionListener {
 				}
 
 				setVisible(false);
-				Cliant.check = new Check(myHandi, yourHandi, resultHandi);
-				Cliant.nowScene = Cliant.Scene.check;
+				Client.check = new Check(myHandi, yourHandi, resultHandi);
+				Client.nowScene = Client.Scene.check;
 			}
 		}
 	}
 
 	public static void main(String[] args) {
-		Cliant cliant = new Cliant();
-		cliant.player = new Player();
-		cliant.setVisible(false);
+		Client client = new Client();
+		client.player = new Player();
+		client.setVisible(false);
 		new HandiCap();
 	}
 }

@@ -278,7 +278,7 @@ public class Server {
 	
 	//main
 	public static void main(String[] args){
-		Server server = new Server(10000); //待ち受けポート
+		Server server = new Server(10001); //待ち受けポート
 		server.acceptClient(); //クライアント受け入れを開始
 	}
 }

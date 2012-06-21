@@ -3,7 +3,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.*;
 
 public class Revenge extends JFrame implements ActionListener {
@@ -71,10 +70,10 @@ public class Revenge extends JFrame implements ActionListener {
 
 		if (!isPushButton) {
 			if (str.equals("はい")) {
-				Cliant.sendMessage(str);
+				Client.sendMessage(str);
 
 			} else if (str.equals("いいえ")) {
-				Cliant.sendMessage(str);
+				Client.sendMessage(str);
 			}
 
 			label1.setText("相手の選択を待っています・・・");
@@ -86,26 +85,26 @@ public class Revenge extends JFrame implements ActionListener {
 		System.out.println("再戦確認：" + message + "を受信しました。");
 
 		if (message.equals("接続切れ")) {
-			Cliant.sendMessage("戻る");
+			Client.sendMessage("戻る");
 			JOptionPane.showMessageDialog(null, "相手の接続が切れたのでログイン画面に戻ります");
 			setVisible(false);
-			Cliant cliant = new Cliant();
-			Cliant.player = new Player();
-			Cliant.nowScene = Cliant.Scene.login;
+			Client client = new Client();
+			Client.player = new Player();
+			Client.nowScene = Client.Scene.login;
 
 		} else {
 			if (message.equals("はい")) {
 				setVisible(false);
-				Cliant.handiCap = new HandiCap();
-				Cliant.nowScene = Cliant.Scene.handi;
+				Client.handiCap = new HandiCap();
+				Client.nowScene = Client.Scene.handi;
 			} else if (message.equals("いいえ")) {
 				setVisible(false);
 
 				// Cliant.player = new Player();
-				Cliant.player.setMyName(null);
-				Cliant.player.setYourName(null);
-				new Cliant();
-				Cliant.nowScene = Cliant.Scene.login;
+				Client.player.setMyName(null);
+				Client.player.setYourName(null);
+				new Client();
+				Client.nowScene = Client.Scene.login;
 			}
 		}
 	}

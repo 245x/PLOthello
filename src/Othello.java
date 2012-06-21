@@ -1,7 +1,6 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,7 +36,6 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 
 	private Font font;
 
-	// テスト用
 	public void checkCanPutField() {
 		for (int i = 0; i < row * row; i++) {
 			if (isCanPutField[i]) {
@@ -58,7 +56,7 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 		isCanPutField = new boolean[row * row];
 		isReverseField = new boolean[row * row];
 
-		switch (Cliant.player.getHandi()) {
+		switch (Client.player.getHandi()) {
 		case 2:
 			field[0] = 1;
 			break;
@@ -103,9 +101,6 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 		c.add(panel2);
 
 		c.setLayout(new BoxLayout(c, BoxLayout.X_AXIS));
-		// c.setLayout(new GridLayout(1,2));
-		// c.setLayout(null);
-		// c.setLayout(new FlowLayout());
 
 		panel1.setLayout(null);
 		panel2.setLayout(null);
@@ -115,27 +110,21 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 		buttonArray = new JButton[row * row];// ボタンの配列を作成
 
 		paint();
-		// panel1.setEnabled(false);
-
-		// panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
-		// panel2.setBackground(Color.gray);
-		// panel2.setLayout(null);
 
 		JLabel label1 = new JLabel();
-		if (Cliant.player.isWhite()) {
-			label1.setText("○" + Cliant.player.getMyName() + "(自分)");
+		if (Client.player.isWhite()) {
+			label1.setText("○" + Client.player.getMyName() + "(自分)");
 		} else {
-			label1.setText("●" + Cliant.player.getMyName() + "(自分)");
+			label1.setText("●" + Client.player.getMyName() + "(自分)");
 		}
 		label1.setFont(font);
 		label1.setBounds(0, 0, 300, 50);
-		// label1.setHorizontalTextPosition(SwingConstants.CENTER);
 
 		JLabel label2 = new JLabel();
-		if (Cliant.player.isWhite()) {
-			label2.setText("●" + Cliant.player.getYourName() + "(相手)");
+		if (Client.player.isWhite()) {
+			label2.setText("●" + Client.player.getYourName() + "(相手)");
 		} else {
-			label2.setText("○" + Cliant.player.getYourName() + "(相手)");
+			label2.setText("○" + Client.player.getYourName() + "(相手)");
 		}
 		label2.setFont(font);
 		label2.setBounds(0, 50, 200, 50);
@@ -145,33 +134,24 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 
 		logArea = new JTextArea(5, 20);
 
-		if (Cliant.player.isMyTurn()) {
+		if (Client.player.isMyTurn()) {
 			logArea.setText("あなたの手番です");
 		} else {
 			logArea.setText("相手の手番です");
 		}
 
 		JScrollPane scrollpane = new JScrollPane(logArea);
-		// scrollpane.setSize(200, 200);
-		// scrollpane.setPreferredSize(new Dimension(10, 10));
 		scrollpane.setBounds(0, 110, 340, 180);
 
 		panel2.add(scrollpane);
-
-		// JLabel emptyLabel1 = new JLabel("   ");
-		// panel1.add(emptyLabel1);
 
 		JButton btnFinish = new JButton("投了");
 		btnFinish.addActionListener(this);
 		btnFinish.setBounds(130, 310, 80, 40);
 		panel2.add(btnFinish);
 
-		// JLabel emptyLabel2 = new JLabel("   ");
-		// panel2.add(emptyLabel2);
-
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(row * 45 * 2 + 30, row * 45 + 40);
-		// setLocation(300, 300);
 		setTitle("オセロ");
 		setVisible(true);
 
@@ -203,7 +183,6 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 			buttonArray[i].setActionCommand(Integer.toString(i));// ボタンを識別するための名前(番号)を付加する
 			buttonArray[i].setBackground(color);
 			buttonArray[i].setBorder(new LineBorder(Color.black, 1));
-			// buttonArray[i].setEnabled(false);
 		}
 	}
 
@@ -214,7 +193,7 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 				int x = i % row;
 				int y = i / row;
 				int myColor, yourColor;
-				if (Cliant.player.isWhite()) {
+				if (Client.player.isWhite()) {
 					myColor = 2;
 					yourColor = 1;
 				} else {
@@ -252,7 +231,6 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 				}
 			}
 		}
-		// テスト用
 		checkCanPutField();
 	}
 
@@ -284,8 +262,8 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 		int x = num % row;
 		int y = num / row;
 		int myColor, yourColor;
-		if (Cliant.player.isMyTurn()) {
-			if (Cliant.player.isWhite()) {
+		if (Client.player.isMyTurn()) {
+			if (Client.player.isWhite()) {
 				myColor = 2;
 				yourColor = 1;
 			} else {
@@ -293,7 +271,7 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 				yourColor = 2;
 			}
 		} else {
-			if (Cliant.player.isWhite()) {
+			if (Client.player.isWhite()) {
 				myColor = 1;
 				yourColor = 2;
 			} else {
@@ -311,7 +289,6 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 			checkNext(j);
 
 			while (tempx >= 0 && tempy >= 0 && tempx < row && tempy < row) {
-
 				if (field[tempy * row + tempx] == yourColor) {
 					isPassYourColor = true;
 				} else if (isPassYourColor
@@ -321,10 +298,8 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 				} else {
 					break;
 				}
-
 				checkNext(j);
 			}
-
 		}
 	}
 
@@ -343,13 +318,13 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
-		if (Cliant.player.isMyTurn()) {
+		if (Client.player.isMyTurn()) {
 			JButton theButton = (JButton) e.getComponent();// クリックしたオブジェクトを得る．キャストを忘れずに
 			String command = theButton.getActionCommand();// ボタンの名前を取り出す
 
 			int num = Integer.parseInt(command);
 			if (isCanPutField[num]) {
-				if (Cliant.player.isWhite()) {
+				if (Client.player.isWhite()) {
 					field[num] = 2;
 				} else {
 					field[num] = 1;
@@ -360,13 +335,13 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 
 				checkPutAvailable();
 
-				Cliant.sendMessage(command); // テスト用にメッセージを送信
+				Client.sendMessage(command); // テスト用にメッセージを送信
 
 				// 終了したかどうかのチェック
 				checkFinish();
 
 				if (isFinish) {
-					Cliant.sendMessage("終了");
+					Client.sendMessage("終了");
 
 					logArea.setText(logArea.getText() + "\n終了しました。");
 					logArea.setCaretPosition(logArea.getDocument().getLength());
@@ -374,20 +349,20 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 					countNum();
 					String result = null;
 					if (countBlack < countWhite) {
-						if (Cliant.player.isWhite()) {
+						if (Client.player.isWhite()) {
 							result = "あなたの勝利です";
 						} else {
 							result = "あなたの負けです";
 						}
 					} else if (countBlack > countWhite) {
-						if (Cliant.player.isWhite()) {
+						if (Client.player.isWhite()) {
 							result = "あなたの負けです";
 						} else {
 							result = "あなたの勝利です";
 						}
 					} else if (countBlack == countWhite) {
-						if (Cliant.player.getHandi() > 0) {
-							if (Cliant.player.isWhite()) {
+						if (Client.player.getHandi() > 0) {
+							if (Client.player.isWhite()) {
 								result = "あなたの負けです";
 							} else {
 								result = "あなたの勝利です";
@@ -402,11 +377,11 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 
 					setVisible(false);
 
-					Cliant.nowScene = Cliant.Scene.revenge;
+					Client.nowScene = Client.Scene.revenge;
 
-					Cliant.revenge = new Revenge();
+					Client.revenge = new Revenge();
 				} else {
-					Cliant.player.setMyTurn(false);
+					Client.player.setMyTurn(false);
 					logArea.setText(logArea.getText() + "\n相手の手番です");
 					logArea.setCaretPosition(logArea.getDocument().getLength());
 				}
@@ -419,33 +394,33 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 		System.out.println("オセロ画面：" + message + "を受信しました");
 
 		if (message.equals("接続切れ")) {
-			Cliant.sendMessage("戻る");
+			Client.sendMessage("戻る");
 			JOptionPane.showMessageDialog(null, "相手の接続が切れたのでログイン画面に戻ります");
 			setVisible(false);
-			Cliant cliant = new Cliant();
-			Cliant.player = new Player();
-			Cliant.nowScene = Cliant.Scene.login;
+			Client cliant = new Client();
+			Client.player = new Player();
+			Client.nowScene = Client.Scene.login;
 
 		} else {
-			if (!Cliant.player.isMyTurn()) {
+			if (!Client.player.isMyTurn()) {
 				if (message.equals("パス")) {
 					logArea.setText(logArea.getText()
 							+ "\n相手が石を置ける場所がなかったため、パスしました。");
 					logArea.setCaretPosition(logArea.getDocument().getLength());
 
 				} else if (message.equals("投了")) {
-					Cliant.sendMessage("終了");
+					Client.sendMessage("終了");
 					logArea.setText(logArea.getText() + "\n相手が投了を選択しました。");
 					logArea.setCaretPosition(logArea.getDocument().getLength());
 					JOptionPane.showMessageDialog(null,
 							"相手が投了したため、あなたの勝ちです\n「了解」を押すと再戦確認となります");
 					setVisible(false);
-					Cliant.nowScene = Cliant.Scene.revenge;
-					Cliant.revenge = new Revenge();
+					Client.nowScene = Client.Scene.revenge;
+					Client.revenge = new Revenge();
 				} else {
 					int num = Integer.parseInt(message);
 
-					if (Cliant.player.isWhite()) {
+					if (Client.player.isWhite()) {
 						field[num] = 1;
 					} else {
 						field[num] = 2;
@@ -453,7 +428,7 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 					reverse(num);
 					paint();
 				}
-				Cliant.player.setMyTurn(true);
+				Client.player.setMyTurn(true);
 				logArea.setText(logArea.getText() + "\nあなたの手番です");
 				logArea.setCaretPosition(logArea.getDocument().getLength());
 
@@ -465,27 +440,27 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 				if (isFinish) {
 					System.out.println("終了判定に入りました");
 
-					Cliant.sendMessage("終了");
+					Client.sendMessage("終了");
 					logArea.setText(logArea.getText() + "\n終了しました。");
 					logArea.setCaretPosition(logArea.getDocument().getLength());
 
 					countNum();
 					String result = null;
 					if (countBlack < countWhite) {
-						if (Cliant.player.isWhite()) {
+						if (Client.player.isWhite()) {
 							result = "あなたの勝利です";
 						} else {
 							result = "あなたの負けです";
 						}
 					} else if (countBlack > countWhite) {
-						if (Cliant.player.isWhite()) {
+						if (Client.player.isWhite()) {
 							result = "あなたの負けです";
 						} else {
 							result = "あなたの勝利です";
 						}
 					} else if (countBlack == countWhite) {
-						if (Cliant.player.getHandi() > 0) {
-							if (Cliant.player.isWhite()) {
+						if (Client.player.getHandi() > 0) {
+							if (Client.player.isWhite()) {
 								result = "あなたの負けです";
 							} else {
 								result = "あなたの勝利です";
@@ -499,21 +474,21 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 							+ "\n「了解」を押すと再戦確認となります");
 
 					setVisible(false);
-					Cliant.nowScene = Cliant.Scene.revenge;
-					Cliant.revenge = new Revenge();
+					Client.nowScene = Client.Scene.revenge;
+					Client.revenge = new Revenge();
 				}
 
 				// パスするかどうかのチェック
 				checkMyPass();
 
 				if (isMyPass && !isFinish) {
-					Cliant.player.setMyTurn(false);
+					Client.player.setMyTurn(false);
 					logArea.setText(logArea.getText()
 							+ "\nあなたが石を置ける場所がなかったため、パスしました。" + "\n相手の手番です");
 					logArea.setCaretPosition(logArea.getDocument().getLength());
 					checkPutAvailable();
 
-					Cliant.sendMessage("パス");
+					Client.sendMessage("パス");
 				}
 			}
 		}
@@ -543,7 +518,6 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 				return;
 			}
 		}
-
 		isMyPass = true;
 	}
 
@@ -555,7 +529,6 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 				return;
 			}
 		}
-
 		isFinish = true;
 	}
 
@@ -563,7 +536,7 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO 自動生成されたメソッド・スタブ
 
-		if (Cliant.player.isMyTurn()) {
+		if (Client.player.isMyTurn()) {
 			JButton theButton = (JButton) arg0.getComponent();// クリックしたオブジェクトを得る．キャストを忘れずに
 			String command = theButton.getActionCommand();// ボタンの名前を取り出す
 
@@ -572,9 +545,6 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 				buttonArray[num].setBackground(yellowColor);
 			}
 		}
-
-		// System.out.println("ボタン" + command + "の位置に入りました。");
-
 	}
 
 	@Override
@@ -605,9 +575,9 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 		// TODO 自動生成されたメソッド・スタブ
 		String str = e.getActionCommand();
 
-		if (Cliant.player.isMyTurn()) {
+		if (Client.player.isMyTurn()) {
 			if (str.equals("投了")) {
-				Cliant.sendMessage("投了");
+				Client.sendMessage("投了");
 
 				logArea.setText(logArea.getText() + "\n投了を選択しました。");
 				logArea.setCaretPosition(logArea.getDocument().getLength());
@@ -617,20 +587,19 @@ public class Othello extends JFrame implements MouseListener, ActionListener {
 
 				setVisible(false);
 
-				Cliant.nowScene = Cliant.Scene.revenge;
+				Client.nowScene = Client.Scene.revenge;
 
-				Cliant.revenge = new Revenge();
+				Client.revenge = new Revenge();
 			}
 		}
 
 	}
 
 	public static void main(String[] args) {
-		Cliant cliant = new Cliant();
-		cliant.setVisible(false);
-		Cliant.player = new Player();
-		Cliant.player.setHandi(0);
+		Client client = new Client();
+		client.setVisible(false);
+		Client.player = new Player();
+		Client.player.setHandi(0);
 		new Othello(0);
-
 	}
 }

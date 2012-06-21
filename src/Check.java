@@ -8,21 +8,18 @@ public class Check extends JFrame implements ActionListener {
 	private JLabel txt1, txt2, txt3, txt4, txt5, txt6;
 	private JButton b1, b2;
 	private Container c1;
-
+	
 	private String resultCheck = null;
-
+	private String infoMsg;
+	
 	private boolean isMyTurn;
 	private boolean isWhite;
-
-	private static int count = 0;
-
 	private boolean isCountOver = false;
-
-	private String infoMsg;
-
 	private boolean isSendFinish = false;
 
 	private Font font;
+	
+	private static int count = 0;
 
 	public Check(int myHandi, int yourHandi, int resultHandi) {
 		c1 = getContentPane();
@@ -41,11 +38,11 @@ public class Check extends JFrame implements ActionListener {
 
 		txt1 = new JLabel("自分：  ");
 		if (myHandi == 0) {
-			txt1.setText(Cliant.player.getMyName() + "：不要");
+			txt1.setText(Client.player.getMyName() + "：不要");
 		} else if (myHandi == 1) {
-			txt1.setText(Cliant.player.getMyName() + "：引き分け勝ち");
+			txt1.setText(Client.player.getMyName() + "：引き分け勝ち");
 		} else {
-			txt1.setText(Cliant.player.getMyName() + "："
+			txt1.setText(Client.player.getMyName() + "："
 					+ String.valueOf(myHandi - 1) + "子局");
 		}
 		txt1.setFont(font);
@@ -53,11 +50,11 @@ public class Check extends JFrame implements ActionListener {
 
 		txt2 = new JLabel("相手：  ");
 		if (yourHandi == 0) {
-			txt2.setText(Cliant.player.getYourName() + "：不要");
+			txt2.setText(Client.player.getYourName() + "：不要");
 		} else if (yourHandi == 1) {
-			txt2.setText(Cliant.player.getYourName() + "：引き分け勝ち");
+			txt2.setText(Client.player.getYourName() + "：引き分け勝ち");
 		} else {
-			txt2.setText(Cliant.player.getYourName() + "："
+			txt2.setText(Client.player.getYourName() + "："
 					+ String.valueOf(yourHandi - 1) + "子局");
 		}
 		txt2.setFont(font);
@@ -130,30 +127,27 @@ public class Check extends JFrame implements ActionListener {
 
 		if (!isSendFinish) {
 			if (str.equals("はい")) {
-				Cliant.sendMessage("はい");
+				Client.sendMessage("はい");
 				isSendFinish = true;
-
 			} else if (str.equals("いいえ")) {
-				Cliant.sendMessage("いいえ");
+				Client.sendMessage("いいえ");
 				isSendFinish = true;
 			}
-
 			txt3.setText("相手の選択を待っています・・・");
 		}
-
 	}
 
 	public void receiveMessage(String message) {
 		System.out.println("確認画面：" + message + "を受信しました");
 
 		if (message.equals("接続切れ")) {
-			Cliant.sendMessage("戻る");
+			Client.sendMessage("戻る");
 			JOptionPane.showMessageDialog(null, "相手の接続が切れたのでログイン画面に戻ります");
 			setVisible(false);
 			count = 0;
-			new Cliant();
-			Cliant.player = new Player();
-			Cliant.nowScene = Cliant.Scene.login;
+			new Client();
+			Client.player = new Player();
+			Client.nowScene = Client.Scene.login;
 
 		} else {
 			if (resultCheck == null) {
@@ -161,13 +155,12 @@ public class Check extends JFrame implements ActionListener {
 					resultCheck = message;
 				} else if (message.equals("いいえ") && count < 3) {
 					setVisible(false);
-					Cliant.handiCap = new HandiCap();
-					Cliant.nowScene = Cliant.Scene.handi;
+					Client.handiCap = new HandiCap();
+					Client.nowScene = Client.Scene.handi;
 				} else if (message.equals("いいえ") && count >= 3) {
 					isCountOver = true;
 					resultCheck = message;
 				}
-
 			} else {
 				/*
 				 * +がハンデを受け取る側、つまり後手(白) -がハンデを渡す側、つまり先手(黒) ハンデなしなら+0,-0を受信
@@ -202,9 +195,9 @@ public class Check extends JFrame implements ActionListener {
 						isMyTurn = false;
 					}
 				}
-				Cliant.player.setWhite(isWhite);
-				Cliant.player.setMyTurn(isMyTurn);
-				Cliant.player.setHandi(handi);
+				Client.player.setWhite(isWhite);
+				Client.player.setMyTurn(isMyTurn);
+				Client.player.setHandi(handi);
 
 				if (isCountOver) {
 					JOptionPane.showMessageDialog(this, "ハンデについての同意が３回連続で"
@@ -215,14 +208,14 @@ public class Check extends JFrame implements ActionListener {
 				count = 0;
 
 				setVisible(false);
-				Cliant.othello = new Othello(handi);
-				Cliant.nowScene = Cliant.Scene.othello;
+				Client.othello = new Othello(handi);
+				Client.nowScene = Client.Scene.othello;
 			}
 		}
 	}
 
 	public static void main(String[] args) {
-		Cliant cliant = new Cliant();
+		Client cliant = new Client();
 		cliant.player = new Player();
 		cliant.setVisible(false);
 		new Check(0, 0, 0);
